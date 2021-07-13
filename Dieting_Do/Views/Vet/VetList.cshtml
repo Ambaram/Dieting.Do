@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Dieting_Do.Models.VetDto>
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Dieting.Do- Our Experts</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <h1 class="text-center">Find a vet near you</h1>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Clinic Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Contact</th>
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+            <thead>
+            <tbody>
+                <tr class="row">
+                    @foreach (var s in Model)
+                    {
+                        <td>@s.VetID</td>
+                        <td>@s.FirstName @s.LastName </td>
+                        <td>@s.ClinicName</td>
+                        <td>@s.Location</td>
+                        <td>@s.Phone</td>
+                        <td class="btn btn-primary" href="Vet/EditVet">Update</td>
+                        <td class="btn btn-warning" href="Vet/DeleteVet">Delete</td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+﻿@model Dieting_Do.Models.St_Dto
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Animal</title>
+</head>
+<body>
+    <h2 class="text-center"> Update Standard Animal Feeding Requirement </h2>
+    <form method="post" action="Standard_Data/UpdateStandard/@Model.SpeciesId">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="species"> Species</label>
+                <input type="text" class="form-control" id="species">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="bmi"> BMI</label>
+                <input type="text" class="form-control" id="bmi">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label for="protein"> Protein</label>
+                <input id="protein" class="form-control" type="number">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="carbs"> Carbs</label>
+                <input type="number" class="form-control" id="carbs">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="fibre"> Fibre</label>
+                <input type="number" class="form-control" id="fibre">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="vitamin"> Vitamin</label>
+                <input type="number" class="form-control" id="vitmain">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="fat"> Fat</label>
+                <input type="number" class="form-control" id="fat">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="image"> Upload Image</label>
+                <input type="file" class="form-control-file" id="weight">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a class="btn btn-secondary" href="Home/index">Home</a>
+        <a class="btn btn-success" href="Standard_Data/StandardList">Back to List</a>
+    </form>
+</body>
+</html>

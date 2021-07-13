@@ -1,0 +1,30 @@
+﻿@model Dieting_Do.Models.ViewModels.AnimalRequirement
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Your @Model.selectedanimal.AnimalName Pet Details</title>
+</head>
+<body>
+    <div>
+        <p>Name: @Model.selectedanimal.AnimalName;</p>
+        <p>Height: @Model.selectedanimal.AnimalHeight;</p>
+        <p>Weight: @Model.selectedanimal.AnimalWeight;</p>
+        <p>Animal BMI : @Model.selectedanimal.AnimalWeight/(@Model.selectedanimal.AnimalHeight^2)</p>
+        <p><strong>Food Requirement </strong></p>
+        <p>Protein: @Model.selectedstandard.St_Protein</p>
+        <p>Crabs: @Model.selectedstandard.St_Carbs</p>
+        <p>Fat: @Model.selectedstandard.St_Fat</p>
+        <p>Fibre: @Model.selectedstandard.St_Fibre</p>
+        <p>Vitamin: @Model.selectedstandard.St_Vitamin</p>
+    </div>
+    <a class="btn btn-danger" href="Animal/DeleteConfirm/@Model.selectedanimal.AnimalId">Delete</a>
+    <a class="btn btn-danger" href="Animal/EditAnimal/@Model.selectedanimal.AnimalId">Update</a>
+    <a class="btn btn-danger" href="Home/Index">Home</a>
+</body>
+</html>

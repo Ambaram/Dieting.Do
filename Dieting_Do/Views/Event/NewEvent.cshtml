@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Dieting_Do.Models.Shelter>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Dieting.Do: Add Event</title>
+</head>
+<body>
+    <h2 class="text-center"> Add Event </h2>
+    <form method="post" action="Event/AddEvent">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="name"> Name</label>
+                <input type="text" name="name" class="form-control" id="name">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="organizer"> Organizer</label>
+                <input type="text" class="form-control" id="organiser" name="organiser">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="category"> Category</label>
+                <select id="category" class="form-control" name="category">
+                    <option value="fundraiser">Fundraiser</option>
+                    <option value="petcare">Animal Care</option>
+                    <option value="petfair">Animal Fair</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <!--Event Location Dropdown-->
+                <label for="location"> Location</label>
+                <select id="location" class="form-control" name="location">
+                    @foreach(var s in Model)
+            {
+                <option value="@s.ShelterID">@s.ShelterName</option>
+            }
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+        <a class="btn btn-secondary" href="Event/EventList">Back to List</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,52 @@
+﻿@model Dieting_Do.Models.ViewModels.ShelterAnimalSpecies
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Dieting.Do- Our Experts</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <h1 class="text-center">Find a vet near you</h1>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Owner</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Contact</th>
+                    <th scope="col">Animals</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            <thead>
+            <tbody>
+                <tr class="row">
+                        <td>@Model.selectedshelter.ShelterID</td>
+                        <td>@Model.selectedshelter.ShelterName </td>
+                        <td>@Model.selectedshelter.OwnerName</td>
+                        <td>@Model.selectedshelter.Address</td>
+                        <td>@Model.selectedshelter.ShelterID</td>
+                        <td>
+                            <select>
+                                @foreach (var s in Model.animallist)
+                                {
+                                    <option value="@s.AnimalId">@s.AnimalName</option>
+                                }
+                            </select>
+                            
+                        </td>
+                        <td class="btn btn-primary" href="Shelter/UpdateShelter">Update</td>
+                        <td class="btn btn-warning" href="Shelter/DeleteShelter">Delete</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

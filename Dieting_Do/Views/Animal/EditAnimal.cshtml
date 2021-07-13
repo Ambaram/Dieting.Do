@@ -1,0 +1,53 @@
+﻿@model Dieting_Do.Models.ViewModels.UpdateAnimal
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Dieing.do - Update pet Details</title>
+</head>
+<body>
+    <h2 class="text-center">Dieting.Do - Update Pet Details </h2>
+    <form method="post" action="/Animal/UpdateAnimal/">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" id="name">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="species"> Species</label>
+                <select name="species">
+                    @foreach (var species in Model.SpeciesList)
+                    {
+                        <option> @species.AnimalSpecies </option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="age"> Age</label>
+                <input type="text" class="form-control" name="age" id="age">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="height"> Height (in Mt.)</label>
+                <input id="height" class="form-control" name="height" type="text">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="weight"> Weight (in Kg.)</label>
+                <input type="text" class="form-control" name="weight" id="weight">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="image"> Upload Image</label>
+                <input type="file" class="form-control-file" name="image" id="image">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary"> Update Animal</button>
+        <a class="btn btn-primary" href="Animal/AnimalList">Back to List</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,22 @@
+﻿@model Dieting_Do.Models.AnnualEvent
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DeleteVet</title>
+</head>
+<body>
+    <div>
+        <p> Are you sure you want to delete @Model.AnnulaEventName from the databsse </p>
+        <div class="row">
+            <a class="col-md-2 button btn btn-danger" href="Event/EventList">Cancel</a>
+            <a class="col-md-2 button btn btn-success" href="Event/DeleteEvent/@Model.AnnualEventID">Delete</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Dieing.do - Add Animal</title>
+</head>
+<body>
+    <h2 class="text-center">Dieting.Do - Add Animal </h2>
+    <form method="post" action="Animal/AddAnimal">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" id="name">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="species"> Species</label>
+                <input type="text" class="form-control" name="species" id="species">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="age"> Age</label>
+                <input type="text" class="form-control" name="age" id="age">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="height"> Height (in Mt.)</label>
+                <input id="height" class="form-control" name="height" type="text">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="weight"> Weight (in Kg.)</label>
+                <input type="text" class="form-control" name="weight" id="weight">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="image"> Upload Image</label>
+                <input type="file" class="form-control-file" name="image" id="image">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary"> Add Animal</button>
+        <a class="btn btn-secondary" href="Animal/AnimalList"> Back</a>
+    </form>
+</body>
+</html>

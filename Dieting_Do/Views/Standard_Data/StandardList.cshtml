@@ -1,0 +1,58 @@
+﻿@model Dieting_Do.Models.ViewModels.StandardVet
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Dieting.Do- Standard Animal Food Requirement Data</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <h1 class="text-center">Standard Animal Food Requirement Data</h1>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Species</th>
+                    <th scope="col">Standard_BMI</th>
+                    <th scope="col">Protein</th>
+                    <th scope="col">Carbs</th>
+                    <th scope="col">Fat</th>
+                    <th scope="col">Vitamin</th>
+                    <th scope="col">Fibre</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            <thead>
+            <tbody>
+                <tr class="row">
+                    @foreach (var s in Model.standardlist)
+                    {
+                        <td>@s.SpeciesId</td>
+                        <td>@s.SpeciesName</td>
+                        <td>@s.St_SpeciesBMI</td>
+                        <td>@s.St_Protein</td>
+                        <td>@s.St_Carbs</td>
+                        <td>@s.St_Fat</td>
+                        <td>@s.St_Vitamin</td>
+                        <td>@s.St_Fibre</td>
+                        <td>
+                            @foreach (var v in Model.vetlist)
+                            {
+                                @v.FirstName @v.LastName
+                            }
+                        </td>
+                        <td class="btn btn-primary" href="Standard_Data/EditStandard">Update</td>
+                        <td class="btn btn-warning" href="Standard_Data/DeleteConfirm">Delete</td>
+                    }
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

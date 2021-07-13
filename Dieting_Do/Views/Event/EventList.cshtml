@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Dieting_Do.Models.AnnualEvent>
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Dieting.Do- Standard Animal Food Requirement Data</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <h1 class="text-center">Standard Animal Food Requirement Data</h1>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Organizer</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Shelter Name</th>
+                    <th scope="col">Shelter Address</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            <thead>
+            <tbody>
+                <tr class="row">
+                    @foreach (var s in Model)
+                    {
+                        <td>@s.AnnualEventID</td>
+                        <td>@s.AnnulaEventName</td>
+                        <td>@s.Organizer</td>
+                        <td>@s.Category</td>
+                        <td>@s.Shelter.Address</td>
+                        <td>@s.Shelter.ShelterName</td>
+                        <td class="btn btn-primary" href="Event/EditEvent">Update</td>
+                        <td class="btn btn-warning" href="Event/DeleteConfirm">Delete</td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-primary" href="Event/NewEvent">Add</a>
+        <a class="btn btn-secondary" href="Home/Index">Back</a>
+    </div>
+</body>
+</html>
