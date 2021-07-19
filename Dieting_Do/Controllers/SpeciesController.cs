@@ -24,7 +24,7 @@ namespace Dieting_Do.Controllers
             };
 
             client = new HttpClient(handler);
-            client.BaseAddress = new Uri("https://localhost:44324/api/SpeciesData");
+            client.BaseAddress = new Uri("https://localhost:44398/api/SpeciesData");
         }
         /// <summary>
         /// Grabs the authentication cookie sent to this controller.

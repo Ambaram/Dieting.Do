@@ -23,7 +23,7 @@ namespace Dieting_Do.Controllers
         /// Header: 200(OK)
         /// Content : The standard food requirement data for every species present in the database
         /// </returns>
-        // GET: api/Standard_Data_Data
+        // GET: api/Standard_Data_Data/StandardList
         [HttpGet]
         public IEnumerable<Standard_Data> StandardList()
         {

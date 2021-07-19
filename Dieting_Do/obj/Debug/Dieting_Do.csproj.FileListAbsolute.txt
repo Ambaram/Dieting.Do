@@ -117,3 +117,4 @@ C:\Users\ambaram srivastava\source\repos\Dieting_Do\Dieting_Do\obj\Debug\Dieting
 C:\Users\ambaram srivastava\source\repos\Dieting_Do\Dieting_Do\obj\Debug\Dieting_Do.Migrations.initialdb.resources
 C:\Users\ambaram srivastava\source\repos\Dieting_Do\Dieting_Do\obj\Debug\Dieting_Do.csproj.GenerateResource.cache
 C:\Users\ambaram srivastava\source\repos\Dieting_Do\Dieting_Do\obj\Debug\Dieting_Do.Migrations.models.resources
+C:\Users\ambaram srivastava\source\repos\Dieting_Do\Dieting_Do\obj\Debug\Dieting_Do.Migrations.modelsviewmodels.resources

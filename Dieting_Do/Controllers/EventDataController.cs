@@ -26,6 +26,8 @@ namespace Dieting_Do.Controllers
         /// <example>
         /// GET: api/AnnualEventData/ListEvents
         /// </example>
+        [HttpGet]
+        [ResponseType(typeof(AnnualEventDto))]
         public IHttpActionResult ListEvents()
         {
             List<AnnualEvent> annualEvents = db.AnnualEvents.ToList();
@@ -37,7 +39,7 @@ namespace Dieting_Do.Controllers
                 Organizer = e.Organizer,
                 Category = e.Category
             }));
-            return Ok();
+            return Ok(annualEventDto);
         }
 
         /// <summary>
@@ -53,7 +55,8 @@ namespace Dieting_Do.Controllers
         /// <example>
         /// GET: api/AnnualEventData/FindEvent/5
         /// </example>
-        [ResponseType(typeof(AnnualEvent))]
+        [HttpGet]
+        [ResponseType(typeof(AnnualEventDto))]
         public IHttpActionResult FindEvent(int id)
         {
             AnnualEvent annualEvent = db.AnnualEvents.Find(id);
@@ -69,7 +72,7 @@ namespace Dieting_Do.Controllers
                 return NotFound();
             }
 
-            return Ok(annualEvent);
+            return Ok(annualEventDto);
         }
 
         /// <summary>
@@ -89,6 +92,8 @@ namespace Dieting_Do.Controllers
         /// FORM DATA : Event JSON object
         /// </example>
         [ResponseType(typeof(void))]
+        [HttpPost]
+        [Authorize]
         public IHttpActionResult UpdateEvent(int id, AnnualEvent annualEvent)
         {
             if (!ModelState.IsValid)
@@ -137,6 +142,8 @@ namespace Dieting_Do.Controllers
         /// FORM DATA : Event JSON object
         /// </example>
         [ResponseType(typeof(AnnualEvent))]
+        [HttpPost]
+        [Authorize]
         public IHttpActionResult AddEvent(AnnualEvent annualEvent)
         {
             if (!ModelState.IsValid)
@@ -164,6 +171,8 @@ namespace Dieting_Do.Controllers
         /// FORM DATA : empty
         /// </example>
         [ResponseType(typeof(AnnualEvent))]
+        [HttpPost]
+        [Authorize]
         public IHttpActionResult DeleteEvent(int id)
         {
             AnnualEvent annualEvent = db.AnnualEvents.Find(id);

@@ -5,10 +5,13 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Dieting_Do.Models;
+using System.Diagnostics;
+using System.IO;
 
 namespace Dieting_Do.Controllers
 {
@@ -26,6 +29,8 @@ namespace Dieting_Do.Controllers
         /// <example>
         /// GET: api/AnimalData/ListAnimal
         /// </example>
+        [HttpGet]
+        [ResponseType(typeof(AnimalDto))]
         public IHttpActionResult ListAnimal()
         {
             List<Animal> animals = db.Animal.ToList();
@@ -38,7 +43,7 @@ namespace Dieting_Do.Controllers
                 AnimalName = a.AnimalName
 
             }));
-            return Ok();
+            return Ok(animalDtos);
         }
 
         /// <summary>
@@ -54,8 +59,9 @@ namespace Dieting_Do.Controllers
         /// <example>
         /// GET: api/AnimalData/FindAnimal/5
         /// </example>
-        [ResponseType(typeof(Animal))]
-        public IHttpActionResult ListAnimals(int id)
+        [HttpGet]
+        [ResponseType(typeof(AnimalDto))]
+        public IHttpActionResult FindAnimal(int id)
         {
             Animal animal = db.Animal.Find(id);
             AnimalDto animalDto = new AnimalDto()
@@ -90,6 +96,8 @@ namespace Dieting_Do.Controllers
         /// // POST: api/AnimalData/UpdateAnimal/5
         /// FORM DATA : Animal JSON object
         /// </example>
+        [HttpPost]
+        [Authorize]
         [ResponseType(typeof(void))]
         public IHttpActionResult UpdateAnimal(int id, Animal animal)
         {
@@ -104,6 +112,8 @@ namespace Dieting_Do.Controllers
             }
 
             db.Entry(animal).State = EntityState.Modified;
+            db.Entry(animal).Property(a => a.animalwithpic).IsModified = false;
+            db.Entry(animal).Property(a => a.picformat).IsModified = false;
 
             try
             {
@@ -124,6 +134,55 @@ namespace Dieting_Do.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [HttpPost]
+        public IHttpActionResult UploadAnimalPic(int id)
+        {
+            bool haspic = false;
+            string picextension;
+            if (Request.Content.IsMimeMultipartContent())
+            {
+                Debug.WriteLine("Multipart data received");
+                int files = HttpContext.Current.Request.Files.Count;
+                if (files == 1 && HttpContext.Current.Request.Files[0] != null)
+                {
+                    var animalpic = HttpContext.Current.Request.Files[0];
+                    if(animalpic.ContentLength > 0)
+                    {
+                        var validtypes = new[] { "jpeg", "jpg", "png", "gif" };
+                        var format = Path.GetExtension(animalpic.FileName).Substring(1);
+                        if (validtypes.Contains(format))
+                        {
+                            try
+                            {
+                                string fn = id + "." + format;
+                                string path = Path.Combine(HttpContext.Current.Server.MapPath("~/Content/Images/"), fn);
+                                animalpic.SaveAs(path);
+                                haspic = true;
+                                picextension = format;
+
+                                Animal SelectedAnimal = db.Animal.Find(id);
+                                SelectedAnimal.animalwithpic = haspic;
+                                SelectedAnimal.picformat = format;
+                                db.Entry(SelectedAnimal).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine("Image not saved successfully!!");
+                                Debug.WriteLine("Exception: " + ex);
+                                return BadRequest();
+                            }
+                        }
+                    }
+                }
+                return Ok(); 
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
         /// <summary>
         /// Add Animal data to the database
         /// </summary>
@@ -139,6 +198,8 @@ namespace Dieting_Do.Controllers
         /// FORM DATA : Animal JSON object
         /// </example>
         [ResponseType(typeof(Animal))]
+        [HttpPost]
+        [Authorize]
         public IHttpActionResult AddAnimal(Animal animal)
         {
             if (!ModelState.IsValid)
@@ -166,6 +227,8 @@ namespace Dieting_Do.Controllers
         /// FORM DATA : empty
         /// </example>
         [ResponseType(typeof(Animal))]
+        [HttpPost]
+        [Authorize]
         public IHttpActionResult DeleteAnimal(int id)
         {
             Animal animal = db.Animal.Find(id);
@@ -173,7 +236,15 @@ namespace Dieting_Do.Controllers
             {
                 return NotFound();
             }
-
+            // Delete AnimalPic
+            if(animal.animalwithpic && animal.picformat != null)
+            {
+                string path = HttpContext.Current.Server.MapPath("~/Content/Images/" + id + "." + animal.picformat);
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+            }
             db.Animal.Remove(animal);
             db.SaveChanges();
 

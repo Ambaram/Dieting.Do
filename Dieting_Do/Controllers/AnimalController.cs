@@ -25,7 +25,7 @@ namespace Dieting_Do.Controllers
             };
 
             client = new HttpClient(handler);
-            client.BaseAddress = new Uri("https://localhost:44324/api/");
+            client.BaseAddress = new Uri("https://localhost:44398/api/");
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Dieting_Do.Controllers
         public ActionResult AnimalList()
         {
 
-            string url = "AnimalData/ListAnimals";
+            string url = "AnimalData/ListAnimal";
             HttpResponseMessage response = client.GetAsync(url).Result;
             IEnumerable<Animal> animals = response.Content.ReadAsAsync<IEnumerable<Animal>>().Result;
 
@@ -115,6 +115,7 @@ namespace Dieting_Do.Controllers
         [Authorize]
         public ActionResult AddAnimal(Animal animal)
         {
+            GetApplicationCookie();
             string url = "AnimalData/AddAnimal";
 
             string jsonpayload = jss.Serialize(animal);
@@ -166,8 +167,9 @@ namespace Dieting_Do.Controllers
         /// </example>
         [HttpPost]
         [Authorize]
-        public ActionResult UpdateAnimal(int id, Animal animal)
+        public ActionResult UpdateAnimal(int id, Animal animal,HttpPostedFileBase AnimalPic)
         {
+            GetApplicationCookie();
             string url = "AnimalData/UpdateAnimal" + id;
             string jsonpayload = jss.Serialize(animal);
 
@@ -175,7 +177,16 @@ namespace Dieting_Do.Controllers
             content.Headers.ContentType.MediaType = "application/json";
 
             HttpResponseMessage response = client.PostAsync(url, content).Result;
-            if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode && AnimalPic!= null)
+            {
+                url = "AnimalData/UploadAnimalPic/" + id;
+                MultipartFormDataContent requestcontent = new MultipartFormDataContent();
+                HttpContent imagecontent = new StreamContent(AnimalPic.InputStream);
+                requestcontent.Add(imagecontent, "AnimalPic", AnimalPic.FileName);
+                response = client.PostAsync(url, requestcontent).Result;
+                return RedirectToAction("ListAnimal");
+            }
+            else if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("ListAnimal");
             }
@@ -212,12 +223,13 @@ namespace Dieting_Do.Controllers
         /// POST : Empty request
         /// </returns>
         /// <example>
-        /// GET : Animal/DeleteAnimal/5
+        /// POST : Animal/DeleteAnimal/5
         /// </example>
         [HttpPost]
         [Authorize]
         public ActionResult DeleteAnimal(int id, Animal animal)
         {
+            GetApplicationCookie();
             string url = "AnimalData/DeleteAnimal" + id;
 
             HttpContent content = new StringContent("");

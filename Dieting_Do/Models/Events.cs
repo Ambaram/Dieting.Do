@@ -25,5 +25,7 @@
             public string AnnulaEventName { get; set; }
             public string Organizer { get; set; }
             public string Category { get; set; }
+            public string ShelterId { get; set; }
+            public string ShelterName { get; set; }
         }
     }

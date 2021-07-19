@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Web;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -26,11 +28,13 @@ namespace Dieting_Do.Controllers
         /// <example>
         /// GET: api/VetData/ListVets
         /// </example>
+        [HttpGet]
+        [ResponseType(typeof(VetDto))]
         public IHttpActionResult ListVets()
         {
             List<Vet> Vets = db.Vets.ToList();
-            List<VetDto> VetDto = new List<VetDto>();
-            Vets.ForEach(v => VetDto.Add(new VetDto()
+            List<VetDto> VetDtos = new List<VetDto>();
+            Vets.ForEach(v => VetDtos.Add(new VetDto()
             {
                 VetID = v.VetID,
                 FirstName = v.FirstName,
@@ -39,7 +43,7 @@ namespace Dieting_Do.Controllers
                 Location = v.Location,
                 Phone = v.Phone
             }));
-            return Ok(VetDto);
+            return Ok(VetDtos);
         }
 
         /// <summary>
@@ -55,7 +59,8 @@ namespace Dieting_Do.Controllers
         /// <example>
         /// GET: api/VetData/FindVet/5
         /// </example>
-        [ResponseType(typeof(Vet))]
+        [HttpGet]
+        [ResponseType(typeof(VetDto))]
         public IHttpActionResult FindVet(int id)
         {
             Vet vet = db.Vets.Find(id);
@@ -92,6 +97,8 @@ namespace Dieting_Do.Controllers
         /// // POST: api/VetData/UpdateVet/5
         /// FORM DATA : Vet JSON object
         /// </example>
+        [HttpGet]
+        [Authorize]
         [ResponseType(typeof(void))]
         public IHttpActionResult UpdateVet(int id, Vet vet)
         {
@@ -140,6 +147,8 @@ namespace Dieting_Do.Controllers
         /// POST: api/VetData/AddVet
         /// FORM DATA : Vet JSON object
         /// </example
+        [HttpPost]
+        [Authorize]
         [ResponseType(typeof(Vet))]
         public IHttpActionResult AddVet(Vet vet)
         {
@@ -165,6 +174,8 @@ namespace Dieting_Do.Controllers
         /// FORM DATA : empty
         /// </example>
         [ResponseType(typeof(Vet))]
+        [HttpPost]
+        [Authorize]
         public IHttpActionResult DeleteVet(int id)
         {
             Vet vet = db.Vets.Find(id);

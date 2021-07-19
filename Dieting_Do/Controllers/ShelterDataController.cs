@@ -17,7 +17,7 @@ namespace Dieting_Do.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         /// <summary>
-        /// Retrievd shelter data for all the shelters available in the database
+        /// Retrieve shelter data for all the shelters available in the database
         /// </summary>
         /// <returns>
         /// HEADER : StatusCode: 200(OK)

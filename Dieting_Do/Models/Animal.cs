@@ -31,6 +31,7 @@
             public int AnimalWeight { get; set; }
             public int AnimalHeight { get; set; }
             public string SpeciesName { get; set; }
+            public string SpeciesId { get; set; }
             public bool Animalwithpic { get; set; }
             public string Picformat { get; set; }
         }

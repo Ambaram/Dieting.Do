@@ -14,9 +14,6 @@
             public string Address { get; set; }
             public string Phone { get; set; }
             public string OwnerName { get; set; }
-            public ICollection<Species> Species { get; set; }
-            // Shelterwise animals
-            public ICollection<Animal> Animals { get; set; }
         }
         public class ShelterDto
         {

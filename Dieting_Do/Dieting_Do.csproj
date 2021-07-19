@@ -234,6 +234,10 @@
     <Compile Include="Migrations\202107121239265_models.Designer.cs">
       <DependentUpon>202107121239265_models.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107151630082_models-viewmodels.cs" />
+    <Compile Include="Migrations\202107151630082_models-viewmodels.Designer.cs">
+      <DependentUpon>202107151630082_models-viewmodels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -368,9 +372,9 @@
     <Content Include="Views\Standard_Data\EditStandard.cshtml" />
     <Content Include="Views\Standard_Data\DeleteConfirm.cshtml" />
     <Content Include="Views\Vet\VetList.cshtml" />
-    <Content Include="Views\Vet\AddVet.cshtml" />
+    <Content Include="Views\Vet\NewVet.cshtml" />
     <Content Include="Views\Vet\EditVet.cshtml" />
-    <Content Include="Views\Vet\DeleteVet.cshtml" />
+    <Content Include="Views\Vet\DeleteConfirm.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -404,6 +408,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107121239265_models.resx">
       <DependentUpon>202107121239265_models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107151630082_models-viewmodels.resx">
+      <DependentUpon>202107151630082_models-viewmodels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

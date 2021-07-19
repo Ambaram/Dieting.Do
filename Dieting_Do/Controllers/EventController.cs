@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Dieting_Do.Models;
 using System.Net.Http;
+using Dieting_Do.Models.ViewModels;
 
 namespace Dieting_Do.Controllers
 {
@@ -23,7 +24,32 @@ namespace Dieting_Do.Controllers
             };
 
             client = new HttpClient(handler);
-            client.BaseAddress = new Uri("https://localhost:44324/api/");
+            client.BaseAddress = new Uri("https://localhost:44398/api/");
+        }
+        /// <summary>
+        /// Grabs the authentication cookie sent to this controller.
+        /// For proper WebAPI authentication, you can send a post request with login credentials to the WebAPI and log the access token from the response. The controller already knows this token, so we're just passing it up the chain.
+        /// 
+        /// Here is a descriptive article which walks through the process of setting up authorization/authentication directly.
+        /// https://docs.microsoft.com/en-us/aspnet/web-api/overview/security/individual-accounts-in-web-api
+        /// </summary>
+        private void GetApplicationCookie()
+        {
+            string token = "";
+            //HTTP client is set up to be reused, otherwise it will exhaust server resources.
+            //This is a bit dangerous because a previously authenticated cookie could be cached for
+            //a follow-up request from someone else. Reset cookies in HTTP client before grabbing a new one.
+            client.DefaultRequestHeaders.Remove("Cookie");
+            if (!User.Identity.IsAuthenticated) return;
+
+            HttpCookie cookie = System.Web.HttpContext.Current.Request.Cookies.Get(".AspNet.ApplicationCookie");
+            if (cookie != null) token = cookie.Value;
+
+            //collect token as it is submitted to the controller
+            //use it to pass along to the WebAPI.
+            if (token != "") client.DefaultRequestHeaders.Add("Cookie", ".AspNet.ApplicationCookie=" + token);
+
+            return;
         }
         /// <summary>
         /// Communicates with the api to fetch event list from the database
@@ -32,7 +58,8 @@ namespace Dieting_Do.Controllers
         /// <example>
         /// GET: Event/EventList
         /// </example>
-        public ActionResult ListEvents()
+        [HttpGet]
+        public ActionResult EventList()
         {
             string url = "AnnualEventData/ListEvents";
             HttpResponseMessage response = client.GetAsync(url).Result;
@@ -52,12 +79,13 @@ namespace Dieting_Do.Controllers
         /// GET : Event/NewEvent
         /// </example>
         [HttpGet]
+        [Authorize]
         public ActionResult NewEvent()
         {
             string url = "ShelterData/ListShelter";
             HttpResponseMessage response = client.GetAsync(url).Result;
             IEnumerable<ShelterDto> shelterist = response.Content.ReadAsAsync<IEnumerable<ShelterDto>>().Result;
-            return View();
+            return View(shelterist);
         }
 
         /// <summary>
@@ -69,11 +97,13 @@ namespace Dieting_Do.Controllers
         /// FAILURE: VIEW: Event/Error 
         /// </returns>
         /// <example>
-        /// 
+        /// POST : Event/AddEvent
         /// </example>
         [HttpPost]
+        [Authorize]
         public ActionResult AddEvent(AnnualEvent annualEvent)
         {
+            GetApplicationCookie();
             string url = "AnnualEventData/AddEvent";
             string jsonpayload = jss.Serialize(annualEvent);
             HttpContent content = new StringContent(jsonpayload);
@@ -100,11 +130,20 @@ namespace Dieting_Do.Controllers
         /// <example>
         /// GET : AnnualEvent/EditEvent/5
         /// </example>
+        [HttpGet]
+        [Authorize]
         public ActionResult EditEvent(int id)
         {
+            EventLocation ViewModel = new EventLocation();
             string url = "AnnualEventData/FindEvent" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             AnnualEventDto selectedEvent = response.Content.ReadAsAsync<AnnualEventDto>().Result;
+            ViewModel.selectedevent = selectedEvent;
+
+            url = "ShelterData/ListShelter";
+            response = client.GetAsync(url).Result;
+            IEnumerable<ShelterDto> shelterlist = response.Content.ReadAsAsync<IEnumerable<ShelterDto>>().Result;
+            ViewModel.shelterlist = shelterlist;
             return View(selectedEvent);
         }
 
@@ -121,8 +160,10 @@ namespace Dieting_Do.Controllers
         /// POST : Event/UpdateEvent/5
         /// </example>
         [HttpPost]
+        [Authorize]
         public ActionResult UpdateEvent(int id, AnnualEvent annualEvent)
         {
+            GetApplicationCookie();
             string url = "AnnualEventData/UpdateEvent" + id;
             string jsonpayload = jss.Serialize(annualEvent);
             HttpContent content = new StringContent(jsonpayload);
@@ -151,14 +192,16 @@ namespace Dieting_Do.Controllers
         [Authorize]
         public ActionResult DeleteConfirm(int id)
         {
-            return View();
+            string url = "AnnualEventData/FindEvent" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            AnnualEventDto selectedevent = response.Content.ReadAsAsync<AnnualEventDto>().Result;
+            return View(selectedevent);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="annualEvent"></param>
         /// <returns>
         /// Success: ACTION: Animal/EventList
         /// Failure: ACTION: Event/Error
@@ -168,8 +211,9 @@ namespace Dieting_Do.Controllers
         /// </example>
         [HttpPost]
         [Authorize]
-        public ActionResult DeleteEvent(int id, AnnualEvent annualEvent)
+        public ActionResult DeleteEvent(int id)
         {
+            GetApplicationCookie();
             string url = "AnnualEventData/DeleteEvent" + id;
 
             HttpContent content = new StringContent("");

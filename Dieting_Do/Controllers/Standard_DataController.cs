@@ -25,7 +25,7 @@ namespace Dieting_Do.Controllers
             };
 
             client = new HttpClient(handler);
-            client.BaseAddress = new Uri("https://localhost:44324/api/Standard_Data/");
+            client.BaseAddress = new Uri("https://localhost:44398/api/");
         }
 
         /// <summary>
@@ -61,9 +61,9 @@ namespace Dieting_Do.Controllers
         [HttpGet]
         public ActionResult StandardList()
         {
-            string url = "StandardList";
+            string url = "Standard_Data/StandardList";
             HttpResponseMessage response = client.GetAsync(url).Result;
-            IEnumerable<Standard_Data> standards = response.Content.ReadAsAsync<IEnumerable<Standard_Data>>().Result;
+            IEnumerable<St_Dto> standards = response.Content.ReadAsAsync<IEnumerable<St_Dto>>().Result;
 
             return View(standards);
         }
@@ -73,10 +73,8 @@ namespace Dieting_Do.Controllers
         {
             return View();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+        
+        // GET : Standard_Data/NewStandard
         [HttpGet]
         [Authorize]
         public ActionResult NewStandard()
@@ -96,9 +94,11 @@ namespace Dieting_Do.Controllers
         /// POST: Standard_Data/AddStandard
         /// </example>
         [HttpPost]
+        [Authorize]
         public ActionResult AddStandard(Standard_Data standard_Data)
         {
-            string url = "AddStandard";
+            GetApplicationCookie();
+            string url = "Standard_Data/AddStandard";
             string jsonpayload = jss.Serialize(standard_Data);
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";
@@ -106,7 +106,7 @@ namespace Dieting_Do.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("ListStandrds");
+                return RedirectToAction("StandrdList");
             }
             else
             {
@@ -114,14 +114,11 @@ namespace Dieting_Do.Controllers
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        // GET : Standard_Data/EditStandard
+        [HttpGet]
         public ActionResult EditStandard(int id)
         {
-            string url = "FindStandard" + id;
+            string url = "Standard_Data/FindStandard/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
             St_Dto selectedstandard = response.Content.ReadAsAsync<St_Dto>().Result;
 
@@ -129,16 +126,23 @@ namespace Dieting_Do.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Update standard data for selected species
         /// </summary>
         /// <param name="id"></param>
         ///<param name="standard_Data"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// Success : VIEW : Standard_Data/StandardList
+        /// Failure : VIEW : Standard_Data/Error
+        /// </returns>
+        /// <example>
+        /// POST : Sandard_Data/UpdateStandard/5
+        /// </example>
         [HttpPost]
         [Authorize]
         public ActionResult UpdateStandard(int id, Standard_Data standard_Data)
         {
-            string url = "UpdateStandard" + id;
+            GetApplicationCookie();
+            string url = "Standard_Data_Data/UpdateStandard/" + id;
             string jsonpayload = jss.Serialize(standard_Data);
             HttpContent content = new StringContent(jsonpayload);
             content.Headers.ContentType.MediaType = "application/json";
@@ -147,7 +151,7 @@ namespace Dieting_Do.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("ListStandards");
+                return RedirectToAction("StandardList");
             }
             else
             {
@@ -155,36 +159,38 @@ namespace Dieting_Do.Controllers
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        // GET : Standard_Data/DeleteConfirm/5
         [HttpGet]
         [Authorize]
         public ActionResult DeleteConfirm(int id)
         {
-            return View();
+            string url = "Standard_Data_Data/FindStandard" + id;
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            St_Dto selectedstandard = response.Content.ReadAsAsync<St_Dto>().Result;
+            return View(selectedstandard);
         }
 
         /// <summary>
-        /// 
+        /// Deletes standard data from the database by communicating through the web api.
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="collection"></param>
-        /// <returns></returns>
+        /// <returns>
+        /// Success : VIEW : Standard_Data/StandardList
+        /// Failure : VIEW : Standard_Data/Error
+        /// </returns>
         [HttpPost]
         [Authorize]
-        public ActionResult DeleteStandard(int id, Standard_Data standard_Data)
+        public ActionResult DeleteStandard(int id)
         {
-            string url = "DeleteStandard" + id;
+            GetApplicationCookie();
+            string url = "Standard_Data_Data/DeleteStandard_Data" + id;
             HttpContent content = new StringContent("");
             content.Headers.ContentType.MediaType = "application/json";
 
             HttpResponseMessage response = client.PostAsync(url, content).Result;
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("ListStandards");
+                return RedirectToAction("StandardList");
             }
 
             else

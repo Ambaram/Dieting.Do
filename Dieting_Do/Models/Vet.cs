@@ -15,7 +15,6 @@
             public string ClinicName { get; set; }
             public string Location { get; set; }
             public string Phone { get; set; }
-            // Vet can treat many animals
             public ICollection<Animal> Animals { get; set; }
         }
         public class VetDto

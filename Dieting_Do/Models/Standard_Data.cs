@@ -17,9 +17,6 @@
             public int St_Fibre { get; set; }
             public int St_Vitamin { get; set; }
             public int St_Fat { get; set; }
-
-            // Vet using our data to prescribe animal nutrition
-            public ICollection<Vet> Vets { get; set; }
         }
         public class St_Dto
         {
