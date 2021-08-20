@@ -55,8 +55,7 @@ namespace Dieting_Do.Controllers
         {
             string url = "VetData/ListVets";
             HttpResponseMessage response = client.GetAsync(url).Result;
-            IEnumerable<VetDto> vets = response.Content.ReadAsAsync<IEnumerable<VetDto>>().Result;
-            Debug.WriteLine(vets.Count());
+            VetDto vets = response.Content.ReadAsAsync<VetDto>().Result;
             return View(vets);
         }
         /// <summary>
